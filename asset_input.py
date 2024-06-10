@@ -20,8 +20,10 @@ class UserAsset(Asset):
     @Asset.decorator_run
     def run(self):
         # alolib API : self.asset.~~~() 
-        input_path = self.asset.get_input_path() + self.args['input_data_folder'] + '/'
-        
+        base_input_path = self.asset.get_input_path() 
+        sub_dir = os.listdir(base_input_path)
+        assert len(sub_dir) == 1
+        input_path = base_input_path + sub_dir[0] + '/'
         for idx, input_file in enumerate(os.listdir(input_path)):
             df = pd.read_csv(input_path + input_file)
             self.data[f'dataframe{idx}'] = df
